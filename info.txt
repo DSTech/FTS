@@ -1,4 +1,4 @@
-"AddonInfo"
+"Gamemode"
 {
 	"name"		"FightToSurvive"
 	"version"	"GITREV"
