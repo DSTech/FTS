@@ -6,8 +6,6 @@
 	"author_name"	"DSX"
 	"author_email"	"MegaDeath409@gmail.com"
 	"author_url"	"md409.dyndns.org"
-	
 	"info"		"Basic Fight to Survive gamemode"
-
 	"override"	"0"
 }
