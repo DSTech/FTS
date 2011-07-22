@@ -1,13 +1,11 @@
-kills = 3
-money = 4001
+local HUD_Kills = 0
+LocalPlayer().HookPNWVar("kills", function(kills) HUD_Kills = kills end))
+local HUD_Money = 0
+LocalPlayer().HookPNWVar("money", function(money) HUD_Money = money end))
 
-LocalPlayer().HookPNWVar("money", function(mny) money = mny end))
-LocalPlayer().HookPNWVar("kills", function(kls) kills = kls end))
-
+local HudBox_Height = 125
+local HudBox_Width = 350
 function DrawHud()
-	height = 125
-	width = 350
-	draw.RoundedBoxEx(16,0,ScrH()-height,width,height,Color(0,50,255,200),false,true,false,false)
+	draw.RoundedBoxEx(16,0,ScrH()-HudBox_Height,HudBox_Width,HudBox_Height,Color(0,50,255,200),false,true,false,false)
 end
-
 hook.Add("HUDPaint","DrawFTSHud",DrawHud)
