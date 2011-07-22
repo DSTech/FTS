@@ -3,4 +3,3 @@ GM.Author	= "Dessix" // Who authored it?
 GM.Email	= "MegaDeath409@GMail.com" //Your email?
 DeriveGamemode("sandbox")
 GM.IsSandboxDerived = true
-include("setpnwvar.lua")

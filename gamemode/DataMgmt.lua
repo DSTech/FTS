@@ -25,7 +25,10 @@ end
 function SetPData(ply, key, val)
 	local t = type(ply)
 	if(t == "string")then
-		t = idToPlayer(t)
+		t = idToPlayer(ply)
+		if not t then
+			Error("Could not find player with SteamID "..ply)
+		end
 	else
 		t = ply
 	end
