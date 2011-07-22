@@ -6,23 +6,23 @@ VARTYPE_INT    = 4;
 VARTYPE_STRING = 5;
 VARTYPE_ENTITY = 6;
 
-typeHandlers = {
-	['Angle'] = function() return VARTYPE_ANGLE, umsg.Angle; end,
-	['Vector'] = function() return VARTYPE_VECTOR, umsg.Vector; end,
-	['boolean'] = function() return VARTYPE_BOOL, umsg.Bool; end,
-	['number'] = function() return VARTYPE_INT, umsg.Long; end,
-	['string'] = function() return VARTYPE_STRING, umsg.String; end,
-	['NPC'] = function() return VARTYPE_ENTITY, umsg.Entity; end,
-	['Entity'] = function() return VARTYPE_ENTITY, umsg.Entity; end,
-	['Player'] = function() return VARTYPE_ENTITY, umsg.Entity; end,
-	nil
-}
-
-function PNWType(val)
-	return (typeHandlers[type(val)] and typeHandlers[type(val)]()) or VARTYPE_NONE;
-end
-
 if(SERVER) then
+	typeHandlers = {
+		['Angle'] = function() return VARTYPE_ANGLE, umsg.Angle; end,
+		['Vector'] = function() return VARTYPE_VECTOR, umsg.Vector; end,
+		['boolean'] = function() return VARTYPE_BOOL, umsg.Bool; end,
+		['number'] = function() return VARTYPE_INT, umsg.Long; end,
+		['string'] = function() return VARTYPE_STRING, umsg.String; end,
+		['NPC'] = function() return VARTYPE_ENTITY, umsg.Entity; end,
+		['Entity'] = function() return VARTYPE_ENTITY, umsg.Entity; end,
+		['Player'] = function() return VARTYPE_ENTITY, umsg.Entity; end,
+		nil
+	}
+
+	function PNWType(val)
+		return (typeHandlers[type(val)] and typeHandlers[type(val)]()) or VARTYPE_NONE;
+	end
+
     function _R.Player:SetPNWVar(name, val)
         if(!name || !val) then
             Error(':SetPNWVar(name, val) - invalid arguments passed!');
