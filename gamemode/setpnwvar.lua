@@ -80,5 +80,6 @@ elseif(CLIENT) then
 	
 	function _R.Player:HookPNWVar(name, func)
 		self.PNWVarHooks[name] = func
+		self.PNWVarHooks[name](self.PNWVars[name])
 	end
 end
