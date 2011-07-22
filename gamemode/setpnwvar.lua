@@ -63,17 +63,22 @@ elseif(CLIENT) then
     usermessage.Hook('pnw', function(um)
 		local lp = LocalPlayer()
         lp.PNWVars = lp.PNWVars || {};
+        lp.PNWVarHooks = lp.PNWVarHooks || {};
 
         local vtype = um:ReadChar();
         local name = um:ReadString();
 
 		lp.PNWVars[name] = (vtypeHandler[vtype] and vtypeHandler[vtype](um))
 		if(lp.PNWVarHooks[name])then
-			
+			lp.PNWVarHooks[name](lp.PNWVars[name])
 		end
     end);
 
     function _R.Player:GetPNWVar(name)
         return self.PNWVars && self.PNWVars[name] || nil;
     end
+	
+	function _R.Player:HookPNWVar(name, func)
+		self.PNWVarHooks[name] = func
+	end
 end
