@@ -1,8 +1,8 @@
 local lp = LocalPlayer()
 local HUD_Kills = 0
 local HUD_Money = 0
-lp:HookPNWVar("kills", function(kills) HUD_Kills = kills end,0)
-lp:HookPNWVar("money", function(money) HUD_Money = money end,0)
+pnwv.HookVar("kills", function(kills) HUD_Kills = kills end,0)
+pnwv.HookVar("money", function(money) HUD_Money = money end,0)
 
 local HudBox_Height = 125
 local HudBox_Width = 350

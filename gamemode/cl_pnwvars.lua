@@ -17,30 +17,24 @@ local vtypeHandlers = {
 	nil
 }
 
-_G.PNWVarDataTable = _G.PNWVarDataTable or {}
-_G.PNWVarDataTable.PNWVars = _G.PNWVarDataTable.PNWVars or {};
-_G.PNWVarDataTable.PNWVarHooks = _G.PNWVarDataTable.PNWVarHooks or {};
+pnwv = pnwv or {}
+pnwv.PNWVars = pnwv.PNWVars or {};
+pnwv.PNWVarHooks = pnwv.PNWVarHooks or {};
 usermessage.Hook('pnw', function(um)
-	_G.PNWVarDataTable.PNWVars = _G.PNWVarDataTable.PNWVars or {};
-	_G.PNWVarDataTable.PNWVarHooks = _G.PNWVarDataTable.PNWVarHooks or {};
-
 	local vtype = um:ReadChar();
 	local name = um:ReadString();
 
-	_G.PNWVarDataTable.PNWVars[name] = (vtypeHandlers[vtype] and vtypeHandlers[vtype](um))
-	if(_G.PNWVarDataTable.PNWVarHooks[name])then
-		_G.PNWVarDataTable.PNWVarHooks[name](_G.PNWVarDataTable.PNWVars[name])
+	pnwv.PNWVars[name] = (vtypeHandlers[vtype] and vtypeHandlers[vtype](um))
+	if(pnwv.PNWVarHooks[name])then
+		pnwv.PNWVarHooks[name](pnwv.PNWVars[name])
 	end
 end);
 
-function _R.Player:GetPNWVar(name, default)
-	return _G.PNWVarDataTable.PNWVars && _G.PNWVarDataTable.PNWVars[name] || default;
+function pnwv.GetVar(name, default)
+	return pnwv.PNWVars && pnwv.PNWVars[name] || default;
 end
 
-function _R.Player:HookPNWVar(name, func, default)
-	_G.PNWVarDataTable.PNWVars = _G.PNWVarDataTable.PNWVars || {};
-	_G.PNWVarDataTable.PNWVarHooks = _G.PNWVarDataTable.PNWVarHooks || {};
-	_G.PNWVarDataTable.PNWVarHooks[name] = func
-	_G.PNWVarDataTable.PNWVarHooks[name](_G.PNWVarDataTable.PNWVars[name] or default)
+function pnwv.HookVar(name, func, default)
+	pnwv.PNWVarHooks[name] = func
+	pnwv.PNWVarHooks[name](pnwv.PNWVars[name] or default)
 end
-	
