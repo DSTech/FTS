@@ -15,3 +15,11 @@ function DrawHud()
 	draw.SimpleText(string.format("Kills: %i", HUD_Kills), "ScoreboardText", 5, HudBox_Height / 2, HudBox_TextColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 end
 hook.Add("HUDPaint","DrawFTSHud",DrawHud)
+
+local hidden = { ["CHudHealth"] = true }
+function HideDefaults(elmnt)
+    if (hidden[elmnt]) then 
+        return false;
+    end 
+end
+hook.Add("HUDShouldDraw","DisableDefaultHud",HideDefaults)
