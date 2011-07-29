@@ -19,6 +19,18 @@ function GiveKills(plr, amnt)
 	SetPData(plr, "kills", newKills)
 end
 
+function TakeMoney(plr, amnt)
+	return GiveMoney(plr, -tonumber(amnt))
+end
+
+function TakeKills(plr, amnt)
+	return GiveKills(plr, -tonumber(amnt))
+end
+
+function GetMoney(plr) return tonumber(GetPData(plr, "money", 0)) end
+
+function GetKills(plr) return tonumber(GetPData(plr, "kills", 0)) end
+
 function SaveStats(plr)
 	if not (plr:IsValid() and plr:IsPlayer() and plr:GetTable().PNWVars)then return end
 	for k,v in pairs(plr:GetTable().PNWVars)do
@@ -29,7 +41,7 @@ end
 pcall(hook.Remove,"PlayerDeath","FTS_DeathTracker")
 function FTS_DeathTracker(victim, attacker, killer)
 	if(victim == killer)then return end
-	GiveMoney(killer, 25)
+	GiveMoney(killer, 50)
 	GiveKills(killer, 1)
 end
 hook.Add("PlayerDeath","FTS_DeathTracker", FTS_DeathTracker )
@@ -40,7 +52,7 @@ function FTS_DamageTracker(ent, inflictor, attacker, amount)
 	--Not on same team?
 	if(amount <= 0)then return end
 	if not(ent:IsPlayer())then return end
-	GiveMoney(attacker, math.floor(amount / 5))
+	GiveMoney(attacker, math.floor(amount / 15))
 end
 hook.Add("EntityTakeDamage","FTS_DamageTracker", FTS_DamageTracker)
 
@@ -49,3 +61,5 @@ function FTS_NPCTracker(NPC, killer, weapon)
 	GiveMoney(killer, 5)
 end
 hook.Add("OnNPCKilled", "FTS_NPCTracker", FTS_NPCTracker)
+
+include("PlayerSWEPStore.lua")
