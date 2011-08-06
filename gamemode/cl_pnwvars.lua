@@ -1,28 +1,37 @@
-local VARTYPE_NONE   = 0;
-local VARTYPE_ANGLE  = 1;
-local VARTYPE_VECTOR = 2;
-local VARTYPE_BOOL   = 3;
-local VARTYPE_INT    = 4;
-local VARTYPE_STRING = 5;
-local VARTYPE_ENTITY = 6;
-
-local vtypeHandlers = {
-	[VARTYPE_ANGLE]=function(um) return um:ReadAngle() end,
-	[VARTYPE_VECTOR]=function(um) return um:ReadVector() end,
-	[VARTYPE_BOOL]=function(um) return um:ReadBool() end,
-	[VARTYPE_INT]=function(um) return um:ReadLong() end,
-	[VARTYPE_STRING]=function(um) return um:ReadString() end,
-	[VARTYPE_ENTITY]=function(um) return um:ReadEntity() end,
-	[VARTYPE_NONE]=function() end,
-	nil
-}
+local VARTYPE_NIL = 0;
+local VARTYPE_ANG = 1;
+local VARTYPE_VEC = 2;
+local VARTYPE_BOL = 3;
+local VARTYPE_INT = 4;
+local VARTYPE_STR = 5;
+local VARTYPE_ENT = 6;
+local VARTYPE_NEW = 7;//New networked variable declaration
 
 pnwv = pnwv or {}
 pnwv.PNWVars = pnwv.PNWVars or {};
+pnwv.PNWVarKeys = pnwv.PNWVarKeys or {};
 pnwv.PNWVarHooks = pnwv.PNWVarHooks or {};
+
+local vtypeHandlers = {
+	[VARTYPE_ANG]=function(um) return um:ReadAngle() end,
+	[VARTYPE_VEC]=function(um) return um:ReadVector() end,
+	[VARTYPE_BOL]=function(um) return um:ReadBool() end,
+	[VARTYPE_INT]=function(um) return um:ReadLong() end,
+	[VARTYPE_STR]=function(um) return um:ReadString() end,
+	[VARTYPE_ENT]=function(um) return um:ReadEntity() end,
+	[VARTYPE_NIL]=function() end,
+	nil
+}
+
 usermessage.Hook('pnw', function(um)
 	local vtype = um:ReadChar();
-	local name = um:ReadString();
+	if(vtype == VARTYPE_NEW)then
+		local ind, nam = um:ReadChar(),um:ReadString();
+		pnwv.PNWVarKeys[ind] = nam
+		print("PNV "..nam.." set as "..ind)
+		return
+	end
+	local name = pnwv.PNWVarKeys[um:ReadChar()] or error("Private Network Variable not registered!")
 
 	pnwv.PNWVars[name] = (vtypeHandlers[vtype] and vtypeHandlers[vtype](um))
 	if(pnwv.PNWVarHooks[name])then

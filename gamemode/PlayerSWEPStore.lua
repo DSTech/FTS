@@ -12,10 +12,12 @@ hook.Add("PlayerLoadout", "FTS_Loadout", FTS_Loadout)
 
 local FTS_PlayerBuySelection = {}
 local FTS_BuyableWeaponsData = {
-	{["FancyName"]="Five Seven",["name"]="weapon_mad_57",["Cost"]=500,["AmmoType"]="AlyxGun",["AmmoCount"]=25,["AmmoOnlyCount"]=50,["AmmoOnlyCost"]=250},
-	{["name"]="weapon_mad_357",["Cost"]=1500,["AmmoType"]="357",["AmmoCount"]=12,["AmmoOnlyCount"]=24,["AmmoOnlyCost"]=500},
+	{["FancyName"]="Five Seven",["name"]="weapon_mad_57",["Cost"]=500,["AmmoType"]="AlyxGun",["AmmoCount"]=10,["AmmoOnlyCount"]=50,["AmmoOnlyCost"]=75},
+	{["FancyName"]="357 Magnum",["name"]="weapon_mad_357",["Cost"]=1000,["AmmoType"]="357",["AmmoCount"]=6,["AmmoOnlyCount"]=24,["AmmoOnlyCost"]=200},
+	{["FancyName"]="AK47",["name"]="weapon_mad_ak47",["Cost"]=1500,["AmmoType"]="StriderMinigun",["AmmoCount"]=24,["AmmoOnlyCount"]=48,["AmmoOnlyCost"]=350},
 	nil
 }
+
 local FTS_BuyableWeapons = {}
 for k,v in pairs(FTS_BuyableWeaponsData) do
 	FTS_BuyableWeapons[v["name"]]=v
