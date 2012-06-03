@@ -16,6 +16,7 @@ function DrawHud()
 end
 hook.Add("HUDPaint","DrawFTSHud",DrawHud)
 
+pcall(hook.Remove, "HUDShouldDraw", "DisableDefaultHud")
 local hidden = { ["CHudHealth"] = true }
 function HideDefaults(elmnt)
     if (hidden[elmnt]) then 
