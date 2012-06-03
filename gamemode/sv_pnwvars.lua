@@ -1,11 +1,11 @@
-local VARTYPE_NIL = 0;
-local VARTYPE_ANG = 1;
-local VARTYPE_VEC = 2;
-local VARTYPE_BOL = 3;
-local VARTYPE_INT = 4;
-local VARTYPE_STR = 5;
-local VARTYPE_ENT = 6;
-local VARTYPE_NEW = 7;//New networked variable declaration
+local VARTYPE_NEW = 0;//New networked variable declaration
+local VARTYPE_NIL = 1;
+local VARTYPE_ANG = 2;
+local VARTYPE_VEC = 3;
+local VARTYPE_BOL = 4;
+local VARTYPE_INT = 5;
+local VARTYPE_STR = 6;
+local VARTYPE_ENT = 7;
 
 local typeHandlers = {
 	['Angle'] = function() return VARTYPE_ANG, umsg.Angle; end,
@@ -38,7 +38,7 @@ function _R.Player:SetPNWVar(name, val)
 	self.PNWVarKeys = self.PNWVarKeys || {}
 
 	if not(self.PNWVars[name])then
-		self.PNWNextVarKey = (self.PNWNextVarKey or -1) + 1
+		self.PNWNextVarKey = (self.PNWNextVarKey or 0) + 1
 		umsg.Start('pnw', self)
 		umsg.Char(VARTYPE_NEW)
 		umsg.Char(self.PNWNextVarKey)
