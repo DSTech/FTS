@@ -3,9 +3,10 @@ local VARTYPE_NIL = 1;
 local VARTYPE_ANG = 2;
 local VARTYPE_VEC = 3;
 local VARTYPE_BOL = 4;
-local VARTYPE_INT = 5;
+local VARTYPE_NUM = 5;
 local VARTYPE_STR = 6;
 local VARTYPE_ENT = 7;
+
 
 pnwv = pnwv or {}
 pnwv.PNWVars = pnwv.PNWVars or {};
@@ -13,36 +14,40 @@ pnwv.PNWVarKeys = pnwv.PNWVarKeys or {};
 pnwv.PNWVarHooks = pnwv.PNWVarHooks or {};
 
 local vtypeHandlers = {
-	[VARTYPE_ANG]=function(um) return um:ReadAngle() end,
-	[VARTYPE_VEC]=function(um) return um:ReadVector() end,
-	[VARTYPE_BOL]=function(um) return um:ReadBool() end,
-	[VARTYPE_INT]=function(um) return um:ReadLong() end,
-	[VARTYPE_STR]=function(um) return um:ReadString() end,
-	[VARTYPE_ENT]=function(um) return um:ReadEntity() end,
+	[VARTYPE_ANG]=function() return net.ReadAngle() end,
+	[VARTYPE_VEC]=function() return Vector(net.ReadFloat(),net.ReadFloat(),net.ReadFloat()) end,
+	[VARTYPE_BOL]=function() return net.ReadBit()~=0 end,
+	[VARTYPE_NUM]=function() return net.ReadFloat() end,
+	[VARTYPE_STR]=function() return net.ReadString() end,
+	[VARTYPE_ENT]=function() return net.ReadEntity() end,
 	[VARTYPE_NIL]=function() end,
 	nil
 }
 
-usermessage.Hook('pnw', function(um)
-	local vtype = um:ReadChar();
+net.Receive('pnw', function(length)
+	local vtype = net.ReadUInt(4)
 	if(vtype == VARTYPE_NEW)then
-		local ind, nam = um:ReadChar(),um:ReadString();
+		local ind, nam = net.ReadUInt(8), net.ReadString();
 		pnwv.PNWVarKeys[ind] = nam
 		print("PNV "..nam.." set as "..ind)
 		return
 	end
-	local name = pnwv.PNWVarKeys[um:ReadChar()]
+	local id = net.ReadUInt(8)
+	local name = pnwv.PNWVarKeys[id]
 	if not name then
-		return ErrorNoHalt("Private Network Variable '"..tostring(name).."' of vtype '"..vtype.."' not registered!\n")
+		return ErrorNoHalt("Private Network Variable '"..tostring(id).."' of vtype '"..tostring(vtype).."' not registered!\n")
 	end
 
-	pnwv.PNWVars[name] = (vtypeHandlers[vtype] and vtypeHandlers[vtype](um))
-	if(pnwv.PNWVarHooks[name])then
+	if(vtypeHandlers[vtype])then
+		pnwv.PNWVars[name] = vtypeHandlers[vtype]()
 		for k,v in pairs(pnwv.PNWVarHooks[name])do
-			v(name, pnwv.PNWVars[name])
+			local success, err = pcall(v, name, pnwv.PNWVars[name])
+			if(not success)then
+				ErrorNoHalt(err)
+			end
 		end
 	end
-end);
+end)
 
 function pnwv.GetVar(name, default)
 	return pnwv.PNWVars && pnwv.PNWVars[name] || default;
