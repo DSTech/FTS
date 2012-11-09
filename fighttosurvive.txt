@@ -1,0 +1,6 @@
+"Gamemode"
+{
+	"base"		"sandbox"
+	"title"		"Fight To Survive"
+	"menusystem"	"1"
+}
