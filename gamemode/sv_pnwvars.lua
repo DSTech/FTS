@@ -6,6 +6,7 @@ local VARTYPE_BOL = 4;
 local VARTYPE_INT = 5;
 local VARTYPE_STR = 6;
 local VARTYPE_ENT = 7;
+local PMeta = FindMetaTable("Player")
 
 local typeHandlers = {
 	['Angle'] = function() return VARTYPE_ANG, umsg.Angle; end,
@@ -28,7 +29,7 @@ local function PNWType(val)
 	end
 end
 
-function _R.Player:SetPNWVar(name, val)
+PMeta.SetPNWVar = function(self, name, val)
 	if(!name || !val) then
 		Error(':SetPNWVar(name, val) - invalid arguments passed!')
 		return
@@ -66,6 +67,6 @@ function _R.Player:SetPNWVar(name, val)
 	umsg.End()
 end
 
-function _R.Player:GetPNWVar(name, default)
+PMeta.GetPNWVar = function(self, name, default)
 	return self.PNWVars && self.PNWVars[name] || default;
 end
