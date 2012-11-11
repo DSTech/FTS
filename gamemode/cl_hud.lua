@@ -24,9 +24,11 @@ function DrawHud()
 	draw.SimpleText(string.format("Kills: %i", tonumber(HUD_Kills)), "Default", 5, HudBox_Height / 2 + 6, HudBox_TextColor, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	
 	local curHP = lp:Health()
-	--Draw the missing health
-	surface.SetDrawColor(Health_BackgroundColor)
-	surface.DrawRect(0, sh-(Health_Max*Health_Scale), Health_Width, (Health_Max-curHP)*Health_Scale)
+	--Draw the missing health if there is any
+	if(curHP < Health_Max)then
+		surface.SetDrawColor(Health_BackgroundColor)
+		surface.DrawRect(0, sh-(Health_Max*Health_Scale), Health_Width, (Health_Max-curHP)*Health_Scale)
+	end
 	--Draw the current health
 	surface.SetDrawColor(Health_HPColor)
 	surface.DrawRect(0, sh-(curHP*Health_Scale), Health_Width, curHP*Health_Scale)
