@@ -50,7 +50,7 @@ function GM:HUDPaint()
 	return true
 end
 
-local hidden = { ["CHudHealth"] = false }
+local hidden = { ["CHudHealth"] = true }
 function GM:HUDShouldDraw(elmnt)
     if (hidden[elmnt]) then 
         return false
