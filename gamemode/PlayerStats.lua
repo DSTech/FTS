@@ -42,6 +42,10 @@ end
 
 function FTS_DeathTracker(victim, attacker, inflictor)
 	if(victim == attacker)then return end
+	if not(attacker:IsPlayer())then
+		victim:ChatPrint("You died of somewhat natural causes")
+		return
+	end
 	victim:ChatPrint("You died to "..attacker:GetName())
 	attacker:ChatPrint("You killed "..victim:GetName())
 	GiveMoney(attacker, 50)
