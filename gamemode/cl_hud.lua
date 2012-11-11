@@ -1,4 +1,3 @@
-local lp = LocalPlayer()
 local HUD_Kills = 0
 local HUD_Money = 0
 pnwv.HookVar("kills", "hudKillsDisplay", function(nwvar,value) HUD_Kills = value end, 0)
@@ -7,8 +6,8 @@ pnwv.HookVar("money", "hudMoneyDisplay", function(nwvar,value) HUD_Money = value
 local HudBox_Height = 32
 local HudBox_Width = 148
 local HudBox_TextColor = Color(255,255,255,255)
-local HudBox_BackgroundColor = Color(0,50,255,200)
-local Health_BackgroundColor = Color(255,0,0,200)
+local HudBox_BackgroundColor = Color(100,100,100,200)
+local Health_BackgroundColor = Color(100,100,100,200)
 local Health_HPColor = Color(0,255,0,200)
 local Health_LineColor = Color(0,0,0,100)
 local Health_LineFrequency = 0.1
@@ -17,6 +16,7 @@ local Health_Width = 28
 local Health_Scale = (surface.ScreenHeight() - HudBox_Height)/Health_Max
 
 function DrawHud()
+	local lp = LocalPlayer()
 	local sw, sh = surface.ScreenWidth(), surface.ScreenHeight()
 	
 	draw.RoundedBoxEx(16,0,0,HudBox_Width,HudBox_Height,HudBox_BackgroundColor,false,false,false,true)
